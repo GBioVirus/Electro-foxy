@@ -131,54 +131,57 @@ async def say(ctx, text: Option(str, description="The phrase to be said"), embed
 				await channel.send(text)
 
 #bunker codes
+#bunker codes
 def save_codes():
-	with open('codes.json', 'w') as file:
-	json.dump(bunker_codes, file)
+		with open('codes.json', 'w') as file:
+				json.dump(bunker_codes, file)
 
 @bot.command(name = "set_ba")
-@commands.is_owner()
+@commands.has_any_role(1166824236405502035)
 async def set_codes(ctx, *codes):
-	global bunker_codes
-	bunker_codes = {i+1: code for i, code in enumerate(codes)}
-	save_codes()
-	await ctx.send("Codes is added.")
+		global bunker_codes
+		bunker_codes = {i+1: code for i, code in enumerate(codes)}
+		save_codes()
+		await ctx.send("Codes is added.")
 
 bunker_codes = {}
 last_loaded_date = None
 
 def load_codes():
-	global bunker_codes, last_loaded_date
-	current_date = datetime.now().date()
-	if last_loaded_date != current_date:
-		with open('codes.json', 'r') as file:
-			bunker_codes = json.load(file)
-			last_loaded_date = current_date
+		global bunker_codes, last_loaded_date
+		current_date = datetime.now().date()
+		if last_loaded_date != current_date:
+				with open('codes.json', 'r') as file:
+						bunker_codes = json.load(file)
+				last_loaded_date = current_date
 
 def get_bunker_code():
-	load_codes()
-	current_date = datetime.now().date()
-	code = bunker_codes.get(str(current_date.day))
-	if not code:
-		code = random.choice(list(bunker_codes.values()))
+		load_codes()
+		current_date = datetime.now().date()
+		code = bunker_codes.get(str(current_date.day))
+		if not code:
+				code = random.choice(list(bunker_codes.values()))
 		return code
 
 footer_phrases = [
-	"Почухай пузика лисенку",
-	"Подари цвяточек",
-	"Танцуй крошка",
-	"А ты так можешь???",
-	"Сдаюсь!"
+		"Почухай пузика лисенку",
+		"Подари цвяточек",
+		"Танцуй крошка",
+		"А ты так можешь???",
+		"Сдаюсь!"
 ]
 
 @bot.listen()
 async def on_message(message):
-	if "альфа код" in message.content.lower() or "бункер код" in message.content.lower():
-		code = get_bunker_code()
-		footer_text = random.choice(footer_phrases)
-		embed = discord.Embed(title="Код Бункера", description=f"Сегодня код бункера: \n# {code}\n", color=0x00ff00)
-		embed.set_footer(text=f"Поставь лайк ♥️\n{footer_text}", icon_url="https://media.discordapp.net/attachments/718777002181787649/1148303687454830713/unnamed.jpg")
-		sent_message = await message.channel.send(content=message.author.mention, embed=embed)
-		await sent_message.add_reaction('❤️')
+		if "альфа код" in message.content.lower() or "бункер код" in message.content.lower():
+				code = get_bunker_code()
+				footer_text = random.choice(footer_phrases)
+				embed = discord.Embed(
+						title="Bunker Code",
+						description=f"The bunker code for today is: \n# {code}\n", color=0x00ff00)
+				embed.set_footer(text=f"If you like it click ♥️\n{footer_text}", icon_url="https://media.discordapp.net/attachments/718777002181787649/1148303687454830713/unnamed.jpg")
+				sent_message = await message.channel.send(content=message.author.mention, embed=embed)
+				await sent_message.add_reaction('❤️')
 		await bot.process_commands(message)
 
 #EA ANSWERS COMMAND
