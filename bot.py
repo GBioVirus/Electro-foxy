@@ -17,7 +17,7 @@ import sqlite3
 #from background import keep_alive
 from datetime import datetime
 
-TOKEN = "MTAyMjgxNDUyOTI4NzA5NDI4Mg.GIc9Af.zMHY1w2WDoLsJpyKXbjigQGCIyZrM2rPJLB9SE"
+TOKEN = "token"
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='k!', intents=intents)
